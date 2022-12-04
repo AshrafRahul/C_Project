@@ -1,8 +1,9 @@
 #include<stdio.h>
+#include<conio.h>
 #include<stdlib.h>
 #include<string.h>
 
-char stuName[20][30];
+char studentName[20][30];
 int presentAttendance[20]={0};
 int absentAttendance[20]={0};
 int indexNumber=0;
@@ -14,24 +15,29 @@ void addStudent(){
         printf("\n\nEnter how many students you want to add: ");
         fflush(stdin);
         scanf("%d",&num);
+
         printf("\n\n");
         for (i=0; i<num; i++){
             printf("Enter %d no student name: ",i+1);
             fflush(stdin);
-            gets(stuName[i]);
+            gets(studentName[i]);
             indexNumber++;
         }
     }
+
     else{
         printf("\n\nEnter how many students you want to add: ");
         fflush(stdin);
         scanf("%d",&num);
+
         add=indexNumber+num;
+
         printf("\n\n");
+
         for (i=indexNumber; i<add; i++){
             printf("Enter %d no student name: ",i+1);
             fflush(stdin);
-            gets(stuName[i]);
+            gets(studentName[i]);
             indexNumber++;
         }
     }
@@ -41,18 +47,23 @@ void addStudent(){
 void takeAttendance(){
     int i;
     char ch;
+
     printf("\n\nEnter Y for present and N for absent\n");
+
     for (i=0; i<indexNumber; i++){
         repeate:
-        printf("%d. %s is present: ",i+1,stuName[i]);
+        printf("%d. %s is present: ",i+1,studentName[i]);
         fflush(stdin);
         scanf("%c",&ch);
+
         if (ch=='Y'||ch=='y'){
             presentAttendance[i]++;
         }
+
         else if (ch=='N'||ch=='n'){
             absentAttendance[i]++;
         }
+
         else{
             printf("Invalid character. Try again\n");
             goto repeate;
@@ -63,9 +74,11 @@ void takeAttendance(){
 
 void checkAttendance(){
     int i;
+
     printf("\n\n    Total Present | Total Absent\n");
+
     for (i=0; i<indexNumber; i++){
-        printf("%s",stuName[i]);
+        printf("%s",studentName[i]);
         printf("     %d           |   %d\n",presentAttendance[i],absentAttendance[i]);
     }
 }
@@ -76,10 +89,11 @@ void removeStudent(){
     printf("\n\nEnter student name to remove: ");
     fflush(stdin);
     gets(name);
+
     for (int i=0; i<indexNumber; i++){
-        if (strcmp(name,stuName[i])==0){
+        if (strcmp(name,studentName[i])==0){
             for (int j = i; j < indexNumber; j++){
-                strcpy(stuName[j],stuName[j+1]);
+                strcpy(studentName[j],studentName[j+1]);
                 presentAttendance[i]=presentAttendance[i+1];
                 absentAttendance[i]=absentAttendance[i+1];
             }
@@ -87,6 +101,7 @@ void removeStudent(){
             printf("\n%s student is removed\n",name);
             break;
         }
+
         else if(i==indexNumber-1){
             printf("This name is not exits\n");
         }
@@ -103,20 +118,23 @@ struct user{
 int main(){
 	struct user user;
 	char filename[100],phone[100],password[100];
-	FILE *fp;
 	int opt,choose;
+	FILE *fp;
+
 	printf("\nWhat do you want to do?");
-	printf("\n\n\t1.Register a new account");
-	printf("\n\t2.Login to account");
+	printf("\n\n\t1.Sign up");
+	printf("\n\t2.Sign in");
 
 	printf("\n\nPlease enter your choice: ");
 	scanf("%d",&opt);
+
 	if(opt == 1){
 		system("cls");
 		printf("Enter your phone number: ");
 		fflush(stdin);
 		scanf("%s",user.phone);
-		printf("Enter your new password: ");
+
+		printf("Enter your password: ");
 		fflush(stdin);
 		scanf("%s",user.password);
 
@@ -125,7 +143,7 @@ int main(){
 		fwrite(&user,sizeof(user),1,fp);
 
 		if(fwrite != 0){
-			printf("Succesfully registered");
+			printf("\n\nSuccesfully registered\n\n");
 		}
 	}
 
@@ -133,13 +151,20 @@ int main(){
 		system("cls");
 		printf("\nPhone No.: ");
 		scanf("%s",&phone);
+
 		printf("Password: ");
 		scanf("%s",&password);
+
 		fp = fopen(strcat(phone,".txt"),"r");
-		if(fp == NULL) printf("Account number not registered");
+
+		if(fp == NULL){
+            printf("Account number not registered");
+		}
+
 		else{
             fread(&user, sizeof(struct user),1,fp);
             fclose(fp);
+
             do{
                 printf("\n--------Main Menu---------\n");
                 printf("Enter 1 for add student\n");
@@ -150,23 +175,28 @@ int main(){
                 printf("\n\nPlease choose any menu: ");
                 fflush(stdin);
                 scanf("%d",&choose);
+
                 switch(choose){
                     case 1:
                         system("cls");
                         addStudent();
                         break;
+
                     case 2:
                         system("cls");
                         takeAttendance();
                         break;
+
                     case 3:
                         system("cls");
                         checkAttendance();
                         break;
+
                     case 4:
                         system("cls");
                         removeStudent();
                         break;
+
                     case 5:
                         system("cls");
                         exit(0);
